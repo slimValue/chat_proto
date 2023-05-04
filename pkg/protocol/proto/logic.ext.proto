@@ -1,0 +1,369 @@
+syntax = "proto3";
+package pb;
+option go_package = "gim/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "robot.ext.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "聊天逻辑对外http服务";
+    version: "1.0";
+    license: {
+      name: "MIT";
+    };
+  };
+  host: "10.241.106.189:8040",
+  schemes: HTTP;
+  consumes: "application/json";
+  produces: "application/json";
+};
+
+service LogicExt {
+  // 注册设备
+  rpc RegisterDevice (RegisterDeviceReq) returns (RegisterDeviceResp) {
+    option (google.api.http) = {
+      post: "/v1/register_device"
+      body: "*"
+    };
+  };
+
+  // 推送消息到房间
+  rpc PushRoom(PushRoomReq)returns(google.protobuf.Empty);
+
+  // 发送好友消息
+  rpc SendMessageToFriend (SendMessageReq) returns (SendMessageResp) {
+    option (google.api.http) = {
+      post: "/v1/send_message"
+      body: "*"
+    };
+  };
+
+  // 添加好友
+  rpc AddFriend (AddFriendReq) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/add_friend"
+      body: "*"
+    };
+  };
+
+  // 同意添加好友
+  rpc AgreeAddFriend (AgreeAddFriendReq) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/agree_add_friend"
+      body: "*"
+    };
+  };
+
+  // 设置好友信息
+  rpc SetFriend (SetFriendReq) returns (SetFriendResp);
+
+  // 获取好友列表
+  rpc GetFriends (google.protobuf.Empty) returns (GetFriendsResp) {
+    option (google.api.http) = {
+      get: "/v1/get_friends"
+    };
+  };
+
+  // 发送群组消息
+  rpc SendMessageToGroup (SendMessageReq) returns (SendMessageResp) {
+    option (google.api.http) = {
+      post: "/v1/send_message_to_group"
+      body: "*"
+    };
+  };
+
+  // 创建群组
+  rpc CreateGroup (CreateGroupReq) returns (CreateGroupResp) {
+    option (google.api.http) = {
+      post: "/v1/create_group"
+      body: "*"
+    };
+  };
+
+  // 更新群组
+  rpc UpdateGroup (UpdateGroupReq) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/update_group"
+      body: "*"
+    };
+  };
+
+  // 获取群组信息
+  rpc GetGroup (GetGroupReq) returns (GetGroupResp) {
+    option (google.api.http) = {
+      get: "/v1/get_group"
+    };
+  };
+
+  // 获取用户加入的所有群组
+  rpc GetGroups (google.protobuf.Empty) returns (GetGroupsResp) {
+    option (google.api.http) = {
+      get: "/v1/get_groups"
+    };
+  };
+
+  // 添加群组成员
+  rpc AddGroupMembers (AddGroupMembersReq) returns (AddGroupMembersResp) {
+    option (google.api.http) = {
+      post: "/v1/add_group_members"
+      body: "*"
+    };
+  };
+
+  // 更新群组成员信息
+  rpc UpdateGroupMember (UpdateGroupMemberReq) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/update_group_member"
+      body: "*"
+    };
+  };
+
+  // 删除群组成员
+  rpc DeleteGroupMember (DeleteGroupMemberReq) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/delete_group_member"
+      body: "*"
+    };
+  };
+
+  // 获取群组成员
+  rpc GetGroupMembers (GetGroupMembersReq) returns (GetGroupMembersResp) {
+    option (google.api.http) = {
+      get: "/v1/get_group_members"
+    };
+  };
+
+  // 添加个人机器人
+  rpc AddRobot (AddRobotReq) returns (AddRobotResp) {
+    option (google.api.http) = {
+      post: "/v1/add_robot"
+      body: "*"
+    };
+  };
+
+  // 获取个人机器人列表
+  rpc GetRobots (google.protobuf.Empty) returns (GetRobotsResp) {
+    option (google.api.http) = {
+      get: "/v1/get_robots"
+    };
+  };
+
+  // 获取群机器人列表
+  rpc GetGroupRobots (GetGroupRobotsReq) returns (GetGroupRobotsResp) {
+    option (google.api.http) = {
+      get: "/v1/get_group_robots"
+    };
+  };
+
+  // 添加群机器人
+  rpc AddGroupRobot (AddGroupRobotReq) returns (AddGroupRobotResp) {
+    option (google.api.http) = {
+      post: "/v1/add_group_robot"
+      body: "*"
+    };
+  };
+
+  // 跟机器人聊天
+  rpc SendMessageToRobot (SendRobotMessageReq) returns (SendMessageResp) {
+    option (google.api.http) = {
+      post: "/v1/send_message_to_robot"
+      body: "*"
+    };
+  };
+
+  // 跟群组机器人聊天
+  rpc SendMessageToGroupRobot (SendRobotMessageReq) returns (SendMessageResp) {
+    option (google.api.http) = {
+      post: "/v1/send_message_to_group_robot"
+      body: "*"
+    };
+  };
+}
+
+message RegisterDeviceReq {
+  int32 type = 2; // 设备类型
+  string brand = 3; // 厂商
+  string model = 4; // 机型
+  string system_version = 5; // 系统版本
+  string sdk_version = 6; // sdk版本号
+}
+message RegisterDeviceResp {
+  int64 device_id = 1; // 设备id
+}
+
+message SendMessageReq {
+  int64 receiver_id = 1; // 接收者ID，用户ID/群组ID
+  string content = 2; // 推动内容
+  int64 send_time = 3; // 消息发送时间戳，精确到毫秒
+}
+
+message SendMessageResp {
+  int64 seq = 1; // 消息序列号
+}
+
+message SendRobotMessageReq {
+  int64 robot_user_id = 1; // 机器人用户id
+  int64 group_id = 2; // 接收者群组ID （非群聊则传0）
+  string content = 3; // 推动内容
+  int64 send_time = 4; // 消息发送时间戳，精确到毫秒
+}
+
+message PushRoomReq{
+  int64 room_id = 1; // 房间id
+  int32 code = 2; // 消息类型
+  string content = 3; // 消息内容
+  int64 send_time = 4; // 消息发送时间戳，精确到毫秒
+  bool is_persist = 5; // 是否将消息持久化
+  bool is_priority = 6; // 是否优先推送
+}
+
+message AddFriendReq {
+  int64 friend_id = 1; // 用户id
+  string remarks = 2; // 备注
+  string description = 3; // 描述
+}
+
+message AgreeAddFriendReq {
+  int64 user_id = 1; // 用户id
+  string remarks = 2; // 备注
+}
+
+message SetFriendReq {
+  int64 friend_id = 1; // 好友id
+  string remarks = 2; // 备注
+  string extra = 8; // 附加字段
+}
+message SetFriendResp {
+  int64 friend_id = 1; // 好友id
+  string remarks = 2; // 备注
+  string extra = 8; // 附加字段
+}
+
+message Friend {
+  int64 user_id = 1; // 用户id
+  string phone_number = 2; // 电话号码
+  string nickname = 3; // 昵称
+  int32 sex = 4; // 性别
+  string avatar_url = 5; // 头像地址
+  string user_extra = 6; // 用户附加字段
+  string remarks = 7; // 备注
+  string extra = 8; // 附加字段
+}
+message GetFriendsResp {
+  repeated Friend friends = 1;
+}
+
+message CreateGroupReq {
+  string name = 1; // 名称
+  string avatar_url = 2; // 头像
+  string introduction = 3; // 简介
+  string extra = 4; // 附加字段
+  repeated int64 member_ids = 5; // 群组成员ID列表
+}
+message CreateGroupResp {
+  int64 group_id = 1; // 群组id
+}
+
+message UpdateGroupReq {
+  int64 group_id = 1; // 群组id
+  string avatar_url = 2; // 头像
+  string name = 3; // 名称
+  string introduction = 4; // 简介
+  string extra = 5; // 附加字段
+}
+
+message GetGroupReq {
+  int64 group_id = 1;
+}
+message GetGroupResp {
+  Group group = 1;
+}
+
+message Group {
+  int64 group_id = 1; // 群组id
+  string name = 2; // 名称
+  string avatar_url = 3; // 头像
+  string introduction = 4; // 简介
+  int32 user_mum = 5; // 用户数
+  string extra = 6; // 附加字段
+  int64 create_time = 7; // 创建时间
+  int64 update_time = 8; // 更新时间
+}
+
+message GetGroupsResp {
+  repeated Group groups = 1;
+}
+
+message AddGroupMembersReq {
+  int64 group_id = 1; // 群组id
+  repeated int64 user_ids = 2; // 用户id列表
+}
+message AddGroupMembersResp {
+  repeated int64 user_ids = 1; // 已经在群组的用户id列表
+}
+
+enum MemberType {
+  GMT_UNKNOWN = 0; // 未知
+  GMT_ADMIN = 1; // 管理员
+  GMT_MEMBER = 2; // 成员
+  GMT_ROBOT = 3; // 机器人
+}
+
+message UpdateGroupMemberReq {
+  int64 group_id = 1; // 群组id
+  int64 user_id = 2; // 用户id
+  MemberType member_type = 3; // 成员类型
+  string remarks = 4; // 备注
+  string extra = 5; // 附加字段
+}
+
+message DeleteGroupMemberReq {
+  int64 group_id = 1; // 群组id
+  int64 user_id = 2; // 用户id
+}
+
+message GetGroupMembersReq {
+  int64 group_id = 1;
+}
+message GetGroupMembersResp {
+  repeated GroupMember members = 1;
+}
+message GroupMember {
+  int64 user_id = 1;
+  string nickname = 2; // 昵称
+  int32 sex = 3; // 性别
+  string avatar_url = 4; // 头像地址
+  string user_extra = 5; // 用户附加字段
+  MemberType member_type = 6; // 成员类型
+  string remarks = 7; // 备注
+  string extra = 8; // 群组成员附加字段
+}
+
+message GetGroupRobotsReq {
+  int64 group_id = 1;
+}
+message GetGroupRobotsResp {
+  repeated Robot robots = 1;
+}
+
+message AddGroupRobotReq {
+  int64 group_id = 1; // 群组id
+  AddRobot add_robot = 2; // 机器人
+}
+message AddGroupRobotResp {
+  int64 user_id = 1; // 机器人对应的user_id
+}
+
+message AddRobotReq {
+  AddRobot add_robot = 1; // 添加机器人
+}
+message AddRobotResp {
+  int64 user_id = 1; // 机器人对应的user_id
+}
+message GetRobotsResp {
+  repeated Robot robots = 1;
+}

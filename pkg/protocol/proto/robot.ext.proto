@@ -1,0 +1,45 @@
+syntax = "proto3";
+package pb;
+option go_package = "gim/pkg/protocol/pb";
+
+
+// 聊天机器人
+message Robot {
+  int64 robot_id = 1; // 创建返回的机器人id
+  int64 user_id = 2; // 对应user_id
+  string name = 3; // 名称
+  string desc = 4; // 描述
+
+  Prompt prompt = 5;
+  Document document = 6;
+  Plugin plugin = 7;
+}
+
+// 添加机器人
+message AddRobot {
+  string name = 1; // 名称
+  string desc = 2; // 描述
+
+  Prompt prompt = 3;
+  Document document = 4;
+  Plugin plugin = 5;
+}
+
+message Document {
+  repeated string info = 1;
+}
+
+message Prompt {
+  string info = 1;
+}
+
+message Plugin {
+  repeated string info = 1;
+}
+
+message BasicRobot {
+  int64 robot_id = 1; // 创建返回的机器人id
+  int64 user_id = 2; // 对应user_id
+  string name = 3; // 名称
+  string desc = 4; // 描述
+}

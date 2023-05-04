@@ -1,0 +1,40 @@
+syntax = "proto3";
+package pb;
+option go_package = "gim/pkg/protocol/pb";
+
+import "google/protobuf/empty.proto";
+import "business.ext.proto";
+
+service BusinessInt {
+  // 权限校验
+  rpc Auth (AuthReq) returns (google.protobuf.Empty);
+  // 批量获取用户信息
+  rpc GetUser (GetUserReq) returns (GetUserResp);
+  // 批量获取用户信息
+  rpc GetUsers (GetUsersReq) returns (GetUsersResp);
+  // 创建用户信息 （内部用于AI机器人创建用户表）
+  rpc CreateUser (CreateUserReq) returns (CreateUserResp);
+}
+
+message AuthReq {
+  int64 user_id = 1;
+  int64 device_id = 2;
+  string token = 3;
+}
+
+message GetUsersReq {
+  map<int64, int32> user_ids = 1; // 用户id
+}
+message GetUsersResp {
+  map<int64, User> users = 1; // 用户信息
+}
+
+message CreateUserReq {
+  string phone_number = 1; // 电话号（用户表主键 必传）
+  string nickname = 2; // 昵称
+  string extra = 5; // 附加字段
+}
+
+message CreateUserResp {
+  int64 user_id = 1; // 用户id
+}

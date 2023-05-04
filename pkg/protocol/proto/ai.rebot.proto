@@ -1,0 +1,42 @@
+syntax = "proto3";
+package pb;
+option go_package = "gim/pkg/protocol/pb";
+
+//import "google/protobuf/empty.proto";
+//import "robot.ext.proto";
+
+service AIRobot{
+  // 添加机器人
+//  rpc Add (AddRobotReq) returns (AddRobotResp);
+
+  // 删除机器人
+//  rpc Delete (DeleteRobotReq) returns (google.protobuf.Empty);
+
+  // 聊天
+//  rpc ChatRobot (ChatRobotReq) returns (ChatRobotResp);
+}
+
+//message AddRobotReq {
+//  string user = 1;
+//  Robot robot = 2;
+//}
+//
+//message AddRobotResp {
+//  int64 robot_id = 1;
+//}
+//
+//
+//message DeleteRobotReq {
+//  string user = 1;
+//  int64 robot_id = 2;
+//}
+
+//message ChatRobotReq {
+//  string user = 1; // 用户
+//  int64 robot_id = 2; //机器人id
+//  bytes input = 3; // 输入
+//}
+//
+//message ChatRobotResp {
+//  bytes output = 1; // 输出
+//}

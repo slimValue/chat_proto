@@ -12,8 +12,10 @@ service BusinessInt {
   rpc GetUser (GetUserReq) returns (GetUserResp);
   // 批量获取用户信息
   rpc GetUsers (GetUsersReq) returns (GetUsersResp);
-  // 创建用户信息 （内部用于AI机器人创建用户表）
-  rpc CreateUser (CreateUserReq) returns (CreateUserResp);
+  // 创建机器人用户信息 （内部用于AI机器人创建用户表）
+  rpc CreateRobotUser (CreateRobotUserReq) returns (CreateRobotUserResp);
+  // 创建机器人用户信息 （内部用于AI机器人创建用户表）
+  rpc GetUserTypes (GetUserIdsReq) returns (GetUserTypesResp);
 }
 
 message AuthReq {
@@ -29,12 +31,20 @@ message GetUsersResp {
   map<int64, User> users = 1; // 用户信息
 }
 
-message CreateUserReq {
+message CreateRobotUserReq {
   string phone_number = 1; // 电话号（用户表主键 必传）
   string nickname = 2; // 昵称
-  string extra = 5; // 附加字段
+  string extra = 3; // 附加字段
 }
 
-message CreateUserResp {
+message CreateRobotUserResp {
   int64 user_id = 1; // 用户id
+}
+
+message GetUserIdsReq {
+  repeated int64 user_ids = 1; // 用户id
+}
+
+message GetUserTypesResp {
+  map<int64, UserType>  user_types = 1; // 用户信息
 }

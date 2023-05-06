@@ -6,40 +6,54 @@ option go_package = "gim/pkg/protocol/pb";
 // 聊天机器人
 message Robot {
   int64 robot_id = 1; // 创建返回的机器人id
-  int64 user_id = 2; // 对应user_id
+  int64 user_id = 2;  // 对应user_id
   string name = 3; // 名称
-  string desc = 4; // 描述
+  string avatar_url = 4; // 头像
+  string desc = 5; // 描述
+  int64 create_time = 6; // 创建时间
+  int64 update_time = 7; // 更新时间
+  Prompt prompt = 8;
+  Document document = 9;
+  Plugin plugin = 10;
+}
 
+message CreateRobotReq {
+  string name = 1; // 名称
+  string avatar_url = 2; // 头像
+  string desc = 3; // 描述
+  Prompt prompt = 4;
+  Document document = 5;
+  Plugin plugin = 6;
+}
+
+message CreateRobotResp {
+  int64 user_id = 1; // 机器人对应的user_id
+}
+
+message UpdateRobotReq {
+  int64 user_id = 1;  // 对应user_id
+  string name = 2; // 名称
+  string avatar_url = 3; // 头像
+  string desc = 4; // 描述
   Prompt prompt = 5;
   Document document = 6;
   Plugin plugin = 7;
 }
 
-// 添加机器人
-message AddRobot {
+message Document {
   string name = 1; // 名称
   string desc = 2; // 描述
-
-  Prompt prompt = 3;
-  Document document = 4;
-  Plugin plugin = 5;
-}
-
-message Document {
-  repeated string info = 1;
+  repeated string info = 3;
 }
 
 message Prompt {
-  string info = 1;
+  string name = 1; // 名称
+  string desc = 2; // 描述
+  string info = 3;
 }
 
 message Plugin {
-  repeated string info = 1;
-}
-
-message BasicRobot {
-  int64 robot_id = 1; // 创建返回的机器人id
-  int64 user_id = 2; // 对应user_id
-  string name = 3; // 名称
-  string desc = 4; // 描述
+  string name = 1; // 名称
+  string desc = 2; // 描述
+  repeated string info = 3;
 }

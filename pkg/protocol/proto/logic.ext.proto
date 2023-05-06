@@ -137,49 +137,35 @@ service LogicExt {
     };
   };
 
-  // 添加个人机器人
-  rpc AddRobot (AddRobotReq) returns (AddRobotResp) {
+  ///////// 机器人接口 ///////
+
+  // 添加机器人
+  rpc CreateRobot (CreateRobotReq) returns (CreateRobotResp) {
     option (google.api.http) = {
-      post: "/v1/add_robot"
+      post: "/v1/create_robot"
       body: "*"
     };
   };
 
-  // 获取个人机器人列表
-  rpc GetRobots (google.protobuf.Empty) returns (GetRobotsResp) {
+  // 更新机器人
+  rpc UpdateRobot (UpdateRobotReq) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      get: "/v1/get_robots"
-    };
-  };
-
-  // 获取群机器人列表
-  rpc GetGroupRobots (GetGroupRobotsReq) returns (GetGroupRobotsResp) {
-    option (google.api.http) = {
-      get: "/v1/get_group_robots"
-    };
-  };
-
-  // 添加群机器人
-  rpc AddGroupRobot (AddGroupRobotReq) returns (AddGroupRobotResp) {
-    option (google.api.http) = {
-      post: "/v1/add_group_robot"
+      post: "/v1/update_robot"
       body: "*"
     };
   };
 
-  // 跟机器人聊天
-  rpc SendMessageToRobot (SendRobotMessageReq) returns (SendMessageResp) {
+  // 获取机器人列表
+  rpc GetAllRobots (google.protobuf.Empty) returns (GetRobotsResp) {
     option (google.api.http) = {
-      post: "/v1/send_message_to_robot"
-      body: "*"
+      get: "/v1/get_all_robots"
     };
   };
 
-  // 跟群组机器人聊天
-  rpc SendMessageToGroupRobot (SendRobotMessageReq) returns (SendMessageResp) {
+  // 根据user_ids获取机器人信息
+  rpc GetRobotsByUserIds (GetRobotsByUserIdsReq) returns (GetRobotsResp) {
     option (google.api.http) = {
-      post: "/v1/send_message_to_group_robot"
-      body: "*"
+      get: "/v1/get_robots_by_user_ids"
     };
   };
 }
@@ -203,13 +189,6 @@ message SendMessageReq {
 
 message SendMessageResp {
   int64 seq = 1; // 消息序列号
-}
-
-message SendRobotMessageReq {
-  int64 robot_user_id = 1; // 机器人用户id
-  int64 group_id = 2; // 接收者群组ID （非群聊则传0）
-  string content = 3; // 推动内容
-  int64 send_time = 4; // 消息发送时间戳，精确到毫秒
 }
 
 message PushRoomReq{
@@ -252,6 +231,7 @@ message Friend {
   string user_extra = 6; // 用户附加字段
   string remarks = 7; // 备注
   string extra = 8; // 附加字段
+  int32 type = 9; // 用户类型 0: 普通人 1: 机器人
 }
 message GetFriendsResp {
   repeated Friend friends = 1;
@@ -343,27 +323,10 @@ message GroupMember {
   string extra = 8; // 群组成员附加字段
 }
 
-message GetGroupRobotsReq {
-  int64 group_id = 1;
-}
-message GetGroupRobotsResp {
-  repeated Robot robots = 1;
+message GetRobotsByUserIdsReq {
+  repeated int64 user_ids = 1;
 }
 
-message AddGroupRobotReq {
-  int64 group_id = 1; // 群组id
-  AddRobot add_robot = 2; // 机器人
-}
-message AddGroupRobotResp {
-  int64 user_id = 1; // 机器人对应的user_id
-}
-
-message AddRobotReq {
-  AddRobot add_robot = 1; // 添加机器人
-}
-message AddRobotResp {
-  int64 user_id = 1; // 机器人对应的user_id
-}
 message GetRobotsResp {
   repeated Robot robots = 1;
 }

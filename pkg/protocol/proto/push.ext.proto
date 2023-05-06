@@ -3,17 +3,14 @@ package pb;
 option go_package = "gim/pkg/protocol/pb";
 
 import "logic.ext.proto";
-import "robot.ext.proto";
 
 enum PushCode {
   PC_ADD_DEFAULT = 0;
 
   PC_USER_MESSAGE = 100; // 用户消息
   PC_GROUP_MESSAGE = 101; // 群组消息
-  PC_ROBOT_MESSAGE_REQ = 102; // 机器人请求消息
-  PC_ROBOT_MESSAGE_REPLY = 103; // 机器人回复消息
-  PC_GROUP_ROBOT_MESSAGE_REQ = 104; // 群聊机器人请求消息
-  PC_GROUP_ROBOT_MESSAGE_REPLY = 105; // 群聊机器人回复消息
+  PC_ROBOT_MESSAGE_REPLY = 102; // 机器人回复消息
+  PC_GROUP_ROBOT_MESSAGE_REPLY = 103; // 群聊机器人回复消息
 
   PC_ADD_FRIEND = 110; // 添加好友请求
   PC_AGREE_ADD_FRIEND = 111; // 同意添加好友
@@ -21,8 +18,6 @@ enum PushCode {
   PC_UPDATE_GROUP = 120; // 更新群组
   PC_ADD_GROUP_MEMBERS = 121; // 添加群组成员
   PC_REMOVE_GROUP_MEMBER = 122; // 移除群组成员
-  PC_ADD_GROUP_ROBOT = 123; // 添加群组机器人
-  PC_REMOVE_GROUP_ROBOT = 124; // 移除群组机器人
 }
 
 message Sender {
@@ -34,19 +29,10 @@ message Sender {
 }
 
 // 用户消息 MC_USER_MESSAGE = 100
+// 机器人请求消息 PC_ROBOT_MESSAGE_REPLY = 102//
+// 机器人回复消息 PC_ROBOT_MESSAGE_REPLY = 103; //
 message UserMessagePush{
   Sender sender = 1;
-  int64 receiver_id = 2; // 用户id或者群组id
-  string content = 3; // 用户发送的消息内容
-}
-
-// 聊天机器人消息
-// PC_ROBOT_MESSAGE_REPLY = 102// 机器人请求消息
-// PC_ROBOT_MESSAGE_REPLY = 103; // 机器人回复消息
-// PC_GROUP_ROBOT_MESSAGE_REQ = 104; // 群聊机器人请求消息
-// PC_GROUP_ROBOT_MESSAGE_REPLY = 105; // 群聊机器人回复消息
-message RobotMessagePush{
-  BasicRobot robot = 1;
   int64 receiver_id = 2; // 用户id或者群组id
   string content = 3; // 用户发送的消息内容
 }
@@ -88,18 +74,4 @@ message RemoveGroupMemberPush {
   int64 opt_id = 1; // 操作人用户id
   string opt_name = 2; // 操作人昵称
   int64 deleted_user_id = 3; // 被删除的成员id
-}
-
-// 添加群组机器人 PC_ADD_GROUP_ROBOT = 123;
-message AddGroupRobotPush {
-  int64 opt_id = 1; // 操作人用户id
-  string opt_name = 2; // 操作人昵称
-  Robot robot = 3; // 机器人用户id
-}
-
-// 移除群组机器人 PC_REMOVE_GROUP_ROBOT = 124;
-message RemoveGroupRobotPush {
-  int64 opt_id = 1; // 操作人用户id
-  string opt_name = 2; // 操作人昵称
-  int64 deleted_robot_user_id = 3; // 被删除的机器人用户id
 }

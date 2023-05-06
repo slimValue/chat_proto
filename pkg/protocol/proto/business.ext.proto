@@ -72,6 +72,13 @@ message User {
   string extra = 5; // 附加字段
   int64 create_time = 6; // 创建时间
   int64 update_time = 7; // 更新时间
+  int32 type = 8; // 用户类型 0: 普通人 1: 机器人
+}
+
+// 用户类型
+enum UserType {
+  UR_COMMON = 0; // 普通人
+  UR_ROBOT = 1;  // 机器人
 }
 
 message GetUserReq {
